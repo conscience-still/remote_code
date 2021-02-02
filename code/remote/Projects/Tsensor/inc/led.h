@@ -4,5 +4,5 @@
 
 
 void led_init(void);
-void led_ctrl(u8 sta);
+void led_process(void);
 #endif /* __DELAY_H*/

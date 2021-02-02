@@ -45,14 +45,7 @@
 /* Private define ------------------------------------------------------------*/
 
 //#define ADVANCED_MODE
-#define T90 90.0
-#define Tambient 25.0
 
-#define ADC_RESOLUTION_12BIT 0.7277 /* (Vref+ / 4096) */
-
-#define FACT_CALIB_ADD  ((u8 *)0x4911)
-#define USER_CALIB_ADD1 ((u8 *)0x1000)
-#define USER_CALIB_ADD2 ((u8 *)0x1001)
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -61,27 +54,10 @@
 RTC_InitTypeDef   RTC_InitStr;
 
 /* Private function prototypes -----------------------------------------------*/
-void GPIO_Initialization(void);
-void ADC_Periph_Init(void);
-void RTC_Periph_Init(void);
-void RTC_restart(void);
-void display_temp(void);
-void user_calib(void);
+
 void delay_1us(u16 n_1us);
 
 /* Private functions ---------------------------------------------------------*/
-void GPIO_Initialization(void)
-{
-  /* Push-button initialization */
-  GPIO_Init(BUTTON_GPIO_PORT, FUNCTION_GPIO_PIN, GPIO_Mode_In_FL_IT);
-  /* Led ports initialization */
-  GPIO_Init(LED_GR_PORT, LED_GR_PIN, GPIO_Mode_Out_PP_High_Fast);
-  GPIO_Init(LED_BL_PORT, LED_BL_PIN, GPIO_Mode_Out_PP_Low_Fast);
-  /* PC0 in output push-pull low because never used by the application */
-  GPIO_Init(GPIOC, GPIO_Pin_0, GPIO_Mode_Out_PP_Low_Slow);
-
-  EXTI->CR1 = 0x00; /* PC1 (push-button) ext. interrupt to falling edge low level */
-}
 
 void ADC_Periph_Init(void)
 {
@@ -97,31 +73,7 @@ void ADC_Periph_Init(void)
   ADC1->SQR[0] |= 0x80; //DMA disable
 }
 
-void RTC_Periph_Init(void)
-{
-  CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE);
-#ifdef USE_LSE
-  CLK_RTCClockConfig(CLK_RTCCLKSource_LSE, CLK_RTCCLKDiv_1);
-#else
-  CLK_RTCClockConfig(CLK_RTCCLKSource_LSI, CLK_RTCCLKDiv_1);
-#endif
 
-  /* Configures the RTC wakeup timer_step = RTCCLK/16 = LSE/16 = 488.28125 us */
-  RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
-  /* Enable wake up unit Interrupt */
-  RTC_ITConfig(RTC_IT_WUT, ENABLE);
-  RTC_SetWakeUpCounter(100);
-  RTC_WakeUpCmd(ENABLE);
-  RTC_InitStr.RTC_AsynchPrediv = 0x7f;
-  RTC_InitStr.RTC_SynchPrediv = 0x00ff;
-  RTC_Init(&RTC_InitStr);
-}
-
-void RTC_restart(void)
-{
-  RTC_SetWakeUpCounter(100);
-  RTC_WakeUpCmd(ENABLE);
-}
 
 
 /**
@@ -137,37 +89,19 @@ void main(void)
 
 
   CLK->CKDIVR = 0x00; // Fcpu = 16MHz
-//
-//  GPIO_Initialization();
-//  LCD_GLASS_Init();
-//  ADC_Periph_Init();
-//  RTC_Periph_Init();
-//  enableInterrupts();
   uart_init();
-//button_init();
-u8 a =5;
-    TOUCH_KEY_Init(0);
-//led_init();
-  relay_init();  
-    
+//  button_init();
+//  led_init();
+//  remote_cr_init();
+//  relay_init();  
   while(1)
   {
-    
-   a = TOUCH_KEY_Get();
-//    test_init();
-    printf("test \n");
-//    led_ctrl(a);
-    
-    relay_ctrl(a);
-//   USART_Transmit_String(1,&a);
-//   GPIO_SetBits(TOUCH_I2C_CLK_PROT, TOUCH_I2C_CLK_PIN);
-//   GPIO_SetBits(TOUCH_I2C_SDA_PROT, TOUCH_I2C_SDA_PIN);
-//    delay_1us(100);
-//   GPIO_ResetBits(TOUCH_I2C_CLK_PROT, TOUCH_I2C_CLK_PIN);
-//   GPIO_ResetBits(TOUCH_I2C_SDA_PROT, TOUCH_I2C_SDA_PIN);
-//       delay_1us(100);
-       delay_ms(10);
+//    led_process();
+//   printf("test \r\n\n");    
+//    relay_ctrl(a);
 
+       delay_ms(500);
+USART1->DR = 0x01;
 //  if(USART_GetFlagStatus(USART1,USART_IT_RXNE))
 //  {
 ////    USART1->DR

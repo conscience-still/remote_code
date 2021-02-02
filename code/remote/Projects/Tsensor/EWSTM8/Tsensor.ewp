@@ -16,7 +16,7 @@
                 <debug>1</debug>
                 <option>
                     <name>GenDeviceSelectMenu</name>
-                    <state>STM8L152C6	STM8L152C6</state>
+                    <state>STM8L151K4	STM8L151K4</state>
                 </option>
                 <option>
                     <name>GenCodeModel</name>
@@ -607,7 +607,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$TOOLKIT_DIR$\config\lnkstm8l152c6.icf</state>
+                    <state>$TOOLKIT_DIR$\config\lnkstm8l151k4.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -1689,12 +1689,6 @@
                 <name>$PROJ_DIR$\..\src\delay.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\src\i2c_touch_bs8116.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\src\iic.c</name>
-            </file>
-            <file>
                 <name>$PROJ_DIR$\..\src\led.c</name>
             </file>
             <file>
@@ -1708,9 +1702,6 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\src\stm8l15x_it.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\src\stm8l_discovery_lcd.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\src\timer.c</name>

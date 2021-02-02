@@ -1,6 +1,8 @@
 #include "remote.h"
+#include "usart.h"
 #include "main.h"
 #include "stdlib.h"
+#include "string.h"
 
 #define  CS_PORT   GPIOA   
 #define  CS_PIN    GPIO_Pin_5
@@ -23,6 +25,8 @@ typedef struct __attribute__((__packed__)){
     u8 length;               //
     u8 nc6;               //
 }SetSend; 
+
+
 void remote_cr_init(void)
 {       
   GPIO_Init(CS_PORT, CS_PIN, GPIO_Mode_Out_PP_Low_Fast);
@@ -30,13 +34,26 @@ void remote_cr_init(void)
   GPIO_SetBits(SET_PORT, SET_PIN);
   GPIO_ResetBits(CS_PORT, CS_PIN);
 }
-
+u8 CheckSum(u8* data, u8 len)// V
+{
+    u8 i;
+    u8 sum;
+    
+    sum = 0;
+    for(i = 0; i < len; i++)
+    {
+        sum += data[i];
+    }
+    return sum;
+}
 u8 SetNrf(void)//
 {
        GPIO_ResetBits(SET_PORT, SET_PIN);
        GPIO_ResetBits(CS_PORT, CS_PIN);
 
       u8 *p1 = malloc(18);
+      memset(p1,0x00,18);
+
       SetSend *p = (SetSend*)p1;
 
       p->head= 0xaa5a;
@@ -62,11 +79,17 @@ u8 SetNrf(void)//
       
 }
 
-void nrf_test(void)
+void nrf_send(u16 sta)
 {
-  u8 sta = 0x0A & 0x0f; 
-//  for()
-  USART_Transmit_String(1,&sta);
+      u8 *p1 = malloc(2);
+      memset(p1,0x00,2);
+      
+//      memcpy(p1,&sta,2);
+      memset(p1,0x01,2);
+      USART_Transmit_String(2,p1);
+      
+      free(p1);
+
 }
 
 

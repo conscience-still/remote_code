@@ -37,7 +37,7 @@ void uart_init(void)
         - No parity
         - Receive and transmit enabled
     */
-    USART_Init(USART1, (uint32_t)115200, USART_WordLength_8b, USART_StopBits_1, USART_Parity_No, (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));
+    USART_Init(USART1, (uint32_t)9600, USART_WordLength_8b, USART_StopBits_1, USART_Parity_No, (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));
 
     USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);
     USART_Cmd(USART1, ENABLE);
