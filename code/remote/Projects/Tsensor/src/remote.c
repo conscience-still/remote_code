@@ -81,13 +81,12 @@ u8 SetNrf(void)//
 
 void nrf_send(u16 sta)
 {
-      u8 *p1 = malloc(2);
-      memset(p1,0x00,2);
-      
-//      memcpy(p1,&sta,2);
-      memset(p1,0x01,2);
-      USART_Transmit_String(2,p1);
-      
+      u8 *p1 = malloc(3);
+      memset(p1,0x00,3);
+      memset(p1,0xAA,1);      
+      memcpy(p1+1,&sta,2);
+//      memset(p1,0x01,2);
+      USART_Transmit_String(3,p1);
       free(p1);
 
 }

@@ -34,7 +34,7 @@
 #define  REALY_11_PORT   GPIOD    
 #define  REALY_11_PIN    GPIO_Pin_5
 
-#define  REALY_12_PORT   GPIOB    
+#define  REALY_12_PORT   GPIOD    
 #define  REALY_12_PIN    GPIO_Pin_4
 
 #define  REALY_13_PORT   GPIOB    
@@ -68,9 +68,9 @@ void relay_init(void)
     GPIO_Init(REALY_16_PORT, REALY_16_PIN, GPIO_Mode_Out_PP_Low_Fast);
 }
 
-void relay_on_test(void)
+void relay_on(void)
 {
-     GPIO_SetBits(REALY_1_PORT, REALY_1_PIN);
+    GPIO_SetBits(REALY_1_PORT, REALY_1_PIN);
     GPIO_SetBits(REALY_2_PORT, REALY_2_PIN);
     GPIO_SetBits(REALY_3_PORT, REALY_3_PIN );
     GPIO_SetBits(REALY_4_PORT, REALY_4_PIN);
@@ -88,7 +88,7 @@ void relay_on_test(void)
     GPIO_SetBits(REALY_16_PORT, REALY_16_PIN);
 }
 
-void relay_off_test(void)
+void relay_off(void)
 {
     GPIO_ResetBits(REALY_1_PORT, REALY_1_PIN);
     GPIO_ResetBits(REALY_2_PORT, REALY_2_PIN);
@@ -107,20 +107,66 @@ void relay_off_test(void)
     GPIO_ResetBits(REALY_15_PORT, REALY_15_PIN);
     GPIO_ResetBits(REALY_16_PORT, REALY_16_PIN); 
 }
-void relay_ctrl(u8 sta)
-{
-//  switch(sta)
-//  {
-//    case 0:
-//      
-//      break;
-//  }
-  
-  
-  relay_on_test();
-  delay_ms(1000);
-//  relay_off_test();
-  delay_ms(1000);
-  
+void relay_ctrl(u16 sta)
+{ 
+//  relay_on();
+//  delay_ms(100);
+//  delay_ms(100);
+    if(sta == 0)
+      return;
+    relay_off();
+
+    if(sta & 0x01 ) {
+      GPIO_SetBits(REALY_1_PORT, REALY_1_PIN);
+    }
+    else if(sta & 0x02){
+      GPIO_SetBits(REALY_2_PORT, REALY_2_PIN);
+    }
+    else if(sta & 0x04){
+      GPIO_SetBits(REALY_3_PORT, REALY_3_PIN);
+    }
+    else if(sta & 0x08){
+      GPIO_SetBits(REALY_4_PORT, REALY_4_PIN );
+    }
+    else if(sta & 0x10){
+      GPIO_SetBits(REALY_5_PORT, REALY_5_PIN );
+    }    
+    else if(sta & 0x20){
+    GPIO_SetBits(REALY_6_PORT, REALY_6_PIN);
+    }
+    else if(sta & 0x40){
+    GPIO_SetBits(REALY_7_PORT, REALY_7_PIN);
+    }
+    else if(sta & 0x80 ) {
+    GPIO_SetBits(REALY_8_PORT, REALY_8_PIN);
+    }
+    else if(sta & 0x100){
+    GPIO_SetBits(REALY_9_PORT, REALY_9_PIN);
+    }
+    else if(sta & 0x200){
+    GPIO_SetBits(REALY_10_PORT, REALY_10_PIN);
+    }
+    else if(sta & 0x400){
+    GPIO_SetBits(REALY_11_PORT, REALY_11_PIN);
+    }
+    
+    else if(sta & 0x800){
+    GPIO_SetBits(REALY_12_PORT, REALY_12_PIN);
+    }    
+    else if(sta & 0x1000){
+    GPIO_SetBits(REALY_13_PORT, REALY_13_PIN);
+    }    
+    else if(sta & 0x2000){
+    GPIO_SetBits(REALY_14_PORT, REALY_14_PIN); 
+
+    }    
+    else if(sta & 0x4000){
+    GPIO_SetBits(REALY_15_PORT, REALY_15_PIN);
+
+    }
+    else if(sta & 0x8000){
+    GPIO_SetBits(REALY_16_PORT, REALY_16_PIN); 
+
+    }    
 }
 

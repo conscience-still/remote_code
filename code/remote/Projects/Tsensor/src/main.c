@@ -84,36 +84,30 @@ void ADC_Periph_Init(void)
   * @par Required preconditions:
   * None
   */
+#define REMOTE_COED 1  /*1 表示 按键端的代码  0 表示 继电器接收端的代码*/
 void main(void)
 {
 
 
   CLK->CKDIVR = 0x00; // Fcpu = 16MHz
   uart_init();
-//  button_init();
-//  led_init();
-//  remote_cr_init();
-//  relay_init();  
+#if REMOTE_COED
+  button_init();
+  led_init();
+  remote_cr_init();
+#else
+  relay_init();  
+#endif
   while(1)
   {
-//    led_process();
-//   printf("test \r\n\n");    
-//    relay_ctrl(a);
-
-       delay_ms(500);
-USART1->DR = 0x01;
-//  if(USART_GetFlagStatus(USART1,USART_IT_RXNE))
-//  {
-////    USART1->DR
-//    USART_Transmit_String(10,a);
-//    USART_ClearFlag(USART1,USART_IT_RXNE);
-//  } 
-//    if(USART_GetFlagStatus(USART1,USART_IT_IDLE))
-//    {
-//          USART_Transmit_String(10,a);
-//    USART_ClearFlag(USART1,USART_IT_IDLE);
-//    }
+  #if REMOTE_COED
+  led_process();
+  delay_ms(50);
   
+  #else
+  Parse_NRF();
+  #endif
+
   }
 }
 #ifdef  USE_FULL_ASSERT

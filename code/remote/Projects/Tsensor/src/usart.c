@@ -2,6 +2,10 @@
 #include "main.h"
 #include "usart.h"
 #include "stdio.h"
+#include "relay.h"
+#include "string.h"
+
+
 
 #define USART_TX_PORT  GPIOA
 #define USART_RX_PORT  GPIOA
@@ -19,7 +23,7 @@ void uart_gpio_init()
 
 void uart_init(void)
 {
-//    uart_gpio_init();   
+   uart_gpio_init();   
 
     CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE);
 
@@ -127,7 +131,7 @@ void NRF_Irq(void)
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
 	{	 
 		res =USART_ReceiveData8(USART1);
-    #if 0
+                #if 0
 		USART_SendData8(USART1,res);
 		#endif
 
@@ -144,17 +148,32 @@ void NRF_Irq(void)
 	USART_ClearITPendingBit(USART1,USART_IT_RXNE);
 }
 
-void Parse_NRF(void){
+void Parse_NRF(void)
+{
   
-  if(NRF_RecvdData())
-  {
-    if(NRF_RcvLen()>1)
+    if(NRF_RcvLen()>2)
     {
       u16 len = NRF_RcvLen(); 
       u8 *p = NRF_RcvBuff();
-      
+      u8 pos = 0;
+      u16 *sta = (u16*)(p+1);
+      while(pos < len){
+        if(*p == 0xAA)
+        {
+          
+          relay_ctrl(*sta);
+          p += 3;
+          pos +=3;
+        }
+        else{
+          p++;
+          pos++;
+        }
+      }
+      USART_RX_STA = 0;
+//      memset(USART_RX_BUF,0x00,sizeof( u8)*USART_MAX_RECV_LEN);
     }
-  }
+  
 }
 
 

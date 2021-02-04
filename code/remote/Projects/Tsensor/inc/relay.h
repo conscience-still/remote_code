@@ -4,5 +4,5 @@
 
 
 void relay_init(void);
-void relay_ctrl(u8 sta);
+void relay_ctrl(u16 sta);
 #endif /* __DELAY_H*/
